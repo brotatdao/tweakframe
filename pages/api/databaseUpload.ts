@@ -34,7 +34,7 @@ interface ProfileData {
  
 
 // Firebase Initialization with Service Account - added to root directory
-const serviceAccount = require('../../brotatdao-firebase.json'); 
+const serviceAccount = require('../../firebase-service.json'); 
 
 initializeApp({
   credential: admin.credential.cert(serviceAccount),
