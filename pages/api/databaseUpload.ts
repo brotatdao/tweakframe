@@ -1,10 +1,6 @@
-import { initializeApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore"; 
+import { db } from '../../utils/firebaseAdmin';
 import Cors from 'cors';
 import { NextApiRequest, NextApiResponse } from 'next';
-import * as admin from 'firebase-admin'; // Import everything as admin
-
-
 
 interface ProfileData {
   profileName: string;
@@ -31,16 +27,6 @@ interface ProfileData {
   firebaseUserId: string;
  }
  
-
-// Firebase Initialization with Service Account - added to root directory
-const serviceAccount = require('../../firebase-service.json'); 
-
-initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  projectId: process.env.FIREBASE_PROJECT_ID
-});
-
-const db = getFirestore();
 
 async function runMiddleware(req: NextApiRequest, res: NextApiResponse, fn: any) {
   return new Promise((resolve, reject) => {
