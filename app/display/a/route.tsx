@@ -12,7 +12,7 @@ export async function GET(request: Request) {
   const profileImage = hasProfileImage ? searchParams.get('profileImage') : `${process.env.NEXT_PUBLIC_SITE_URL}/default.jpg`
 
   const fontData = await fetch(
-    new URL('../../../assets/Oswald-Bold.ttf', import.meta.url)
+    new URL('../../../assets/Tweakmodern-Regular.ttf', import.meta.url)
   ).then((res) => res.arrayBuffer())
 
   return new ImageResponse(
@@ -65,7 +65,7 @@ export async function GET(request: Request) {
       height: 630,
       fonts: [
         {
-          name: 'Oswald Bold',
+          name: 'Tweakmodern Regular',
           data: fontData,
           style: 'normal',
         },

@@ -19,7 +19,7 @@ app.frame('/', (c) => {
     action: '/claim',
     image: `${process.env.NEXT_PUBLIC_SITE_URL}/site-preview.jpg`,
     intents: [
-      <Button value="start">Get Started</Button>
+      <Button value="start">make it official</Button>
     ],
   })
 })
@@ -100,13 +100,13 @@ app.frame('/claim', async (c) => {
     if (success) {
       return c.res({
         action: '/',
-        image: `${process.env.NEXT_PUBLIC_SITE_URL}/meme/a?text=${encodeURIComponent(`${username} claimed`)}&profileImage=${encodeURIComponent(profileImage!)}`,
+        image: `${process.env.NEXT_PUBLIC_SITE_URL}/display/a?text=${encodeURIComponent(`it's official you're ${username}.tweakin.eth`)}&profileImage=${encodeURIComponent(profileImage!)}`,
         intents: [<Button>Start Over 🔄</Button>],
       })
     } else if (error === 'Name already claimed') {
       return c.res({
         action: '/',
-        image: `${process.env.NEXT_PUBLIC_SITE_URL}/meme/a?text=${encodeURIComponent(`${username} already claimed`)}&profileImage=${encodeURIComponent(profileImage!)}`,
+        image: `${process.env.NEXT_PUBLIC_SITE_URL}/display/a?text=${encodeURIComponent(`${username} is already a tweak`)}&profileImage=${encodeURIComponent(profileImage!)}`,
         intents: [<Button>Start Over 🔄</Button>],
       })
     } else {
