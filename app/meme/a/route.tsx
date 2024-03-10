@@ -1,6 +1,4 @@
 import { ImageResponse } from 'next/og'
-// App router includes @vercel/og.
-// No need to install it.
 
 export const runtime = 'edge'
 
@@ -10,9 +8,8 @@ export async function GET(request: Request) {
   const hasText = searchParams.has('text')
   const text = hasText ? searchParams.get('text')?.slice(0, 100) : ''
 
-  const imageData = await fetch(
-    new URL('./meme-simply.jpg', import.meta.url)
-  ).then((res) => res.arrayBuffer())
+  const hasProfileImage = searchParams.has('profileImage')
+  const profileImage = hasProfileImage ? searchParams.get('profileImage') : `${process.env.NEXT_PUBLIC_SITE_URL}/default.jpg`
 
   const fontData = await fetch(
     new URL('../../../assets/Oswald-Bold.ttf', import.meta.url)
@@ -32,8 +29,18 @@ export async function GET(request: Request) {
           position: 'relative',
         }}
       >
-        {/* @ts-ignore */}
-        <img width="1200" height="630" alt="meme" src={imageData} />
+        {profileImage ? (
+          // @ts-ignore
+          <img width="1200" height="630" alt="Profile" src={profileImage} />
+        ) : (
+          <div
+            style={{
+              width: '1200px',
+              height: '630px',
+              background: '#f6f6f6',
+            }}
+          />
+        )}
         <p
           style={{
             position: 'absolute',

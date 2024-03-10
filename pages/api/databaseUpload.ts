@@ -1,8 +1,7 @@
-import { initializeApp, applicationDefault } from "firebase-admin/app";
+import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore"; 
 import Cors from 'cors';
 import { NextApiRequest, NextApiResponse } from 'next';
-import * as path from 'path';
 import * as admin from 'firebase-admin'; // Import everything as admin
 
 

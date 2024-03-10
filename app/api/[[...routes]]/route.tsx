@@ -100,13 +100,13 @@ app.frame('/claim', async (c) => {
     if (success) {
       return c.res({
         action: '/',
-        image: `${process.env.NEXT_PUBLIC_SITE_URL}/meme/a?text=${encodeURIComponent(`${username} claimed`)}`,
+        image: `${process.env.NEXT_PUBLIC_SITE_URL}/meme/a?text=${encodeURIComponent(`${username} claimed`)}&profileImage=${encodeURIComponent(profileImage!)}`,
         intents: [<Button>Start Over 🔄</Button>],
       })
     } else if (error === 'Name already claimed') {
       return c.res({
         action: '/',
-        image: `${process.env.NEXT_PUBLIC_SITE_URL}/meme/a?text=${encodeURIComponent(`${username} already claimed`)}`,
+        image: `${process.env.NEXT_PUBLIC_SITE_URL}/meme/a?text=${encodeURIComponent(`${username} already claimed`)}&profileImage=${encodeURIComponent(profileImage!)}`,
         intents: [<Button>Start Over 🔄</Button>],
       })
     } else {
