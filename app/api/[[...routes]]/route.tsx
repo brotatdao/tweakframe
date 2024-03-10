@@ -16,76 +16,111 @@ const app = new Frog({
 
 app.frame('/', (c) => {
   return c.res({
-    action: '/picker',
+    action: '/claim',
     image: `${process.env.NEXT_PUBLIC_SITE_URL}/site-preview.jpg`,
-    intents: [<Button value="A">A</Button>, <Button value="B">B</Button>],
+    intents: [
+      <Button value="start">Get Started</Button>
+    ],
   })
 })
 
-app.frame('/picker', (c) => {
-  const { buttonValue, verified } = c
-
+app.frame('/claim', async (c) => {
+  const { verified } = c
   if (verified) {
-    if (buttonValue === 'A') {
-      return c.res({
-        action: '/meme/a',
-        image: `${process.env.NEXT_PUBLIC_SITE_URL}/meme/a`,
-        intents: [
-          <TextInput placeholder="Text" />,
-          <Button value="generate">Generate</Button>,
-        ],
-      })
+    const { fid } = c.frameData!
+    const address = await getAddressForFid({
+      fid,
+      options: { fallbackToCustodyAddress: true }
+    })
+
+    // Fetch user data using the FID
+    const userData = await getUserDataForFid({ fid })
+    const { profileImage, displayName, username, bio } = userData || {}
+
+    // --- 1. Profile Upload ---
+    const profileUploadResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/ipfsUpload`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.LOCAL_API_KEY}` 
+      },
+      body: JSON.stringify({
+        profileName: username,
+        bio,
+        profilePicUrl: profileImage,
+      }),
+    })
+
+    if (!profileUploadResponse.ok) {
+      throw new Error('Profile upload to IPFS failed')
     }
 
-    return c.res({
-      action: '/meme/b',
-      image: `${process.env.NEXT_PUBLIC_SITE_URL}/meme/b`,
-      imageAspectRatio: '1:1',
-      intents: [
-        <TextInput placeholder="Text" />,
-        <Button value="generate">Generate</Button>,
-      ],
+    const { profileHtmlUrl, profilePicUrl } = await profileUploadResponse.json()
+
+    // --- 2. ENS Registration ---
+    const registerResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/registerSubdomain`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.LOCAL_API_KEY}`  
+      },
+      body: JSON.stringify({
+        domain: 'brotatdao.eth',
+        name: username,
+        address: address || '',
+        contenthash: profileHtmlUrl,
+        text_records: {
+          "com.twitter": username,
+          "description": bio, 
+          "avatar": profilePicUrl,
+        },
+        single_claim: true,
+      }),
     })
-  }
+    const { success, error } = await registerResponse.json()
 
-  return c.res({
-    action: '/',
-    image: (
-      <div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
-        Invalid User
-      </div>
-    ),
-    intents: [<Button>Try Again 🔄</Button>],
-  })
-})
-
-app.frame('/meme/:id', (c) => {
-  const id = c.req.param('id')
-
-  const { frameData, verified } = c
-  const { inputText = '' } = frameData || {}
-
-  if (verified) {
-    const newSearchParams = new URLSearchParams({
-      text: inputText,
+    // --- 3. Firestore Save ---
+    await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/databaseUpload`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.LOCAL_API_KEY}`
+      },
+      body: JSON.stringify({
+        profileName: username,
+        bio,
+        walletAddress: address || '', 
+        twitterHandle: username,
+        profileHtmlUrl,
+        profilePicUrl,
+        image_url: profileImage,
+      }),
     })
 
-    if (id === 'a') {
+    if (success) {
       return c.res({
         action: '/',
-        image: `${process.env.NEXT_PUBLIC_SITE_URL}/meme/a?${newSearchParams}`,
+        image: `${process.env.NEXT_PUBLIC_SITE_URL}/meme/a?text=${encodeURIComponent(`${username} claimed`)}`,
         intents: [<Button>Start Over 🔄</Button>],
       })
+    } else if (error === 'Name already claimed') {
+      return c.res({
+        action: '/',
+        image: `${process.env.NEXT_PUBLIC_SITE_URL}/meme/a?text=${encodeURIComponent(`${username} already claimed`)}`,
+        intents: [<Button>Start Over 🔄</Button>],
+      })
+    } else {
+      return c.res({
+        action: '/',
+        image: (
+          <div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
+            Error: {error}
+          </div>
+        ),
+        intents: [<Button>Try Again</Button>],
+      })
     }
-
-    return c.res({
-      action: '/',
-      image: `${process.env.NEXT_PUBLIC_SITE_URL}/meme/b?${newSearchParams}`,
-      imageAspectRatio: '1:1',
-      intents: [<Button>Start Over 🔄</Button>],
-    })
   }
-
   return c.res({
     action: '/',
     image: (
@@ -93,7 +128,7 @@ app.frame('/meme/:id', (c) => {
         Invalid User
       </div>
     ),
-    intents: [<Button>Try Again 🔄</Button>],
+    intents: [<Button>Start Over 🔄</Button>],
   })
 })
 
