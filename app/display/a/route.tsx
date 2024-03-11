@@ -49,11 +49,10 @@ export async function GET(request: Request) {
             color: '#ffffff',
             lineHeight: 1,
             fontSize: 100,
-            fontFamily: '"Oswald Bold"',
+            fontFamily: '"Tweakmodern Regular"',
             textAlign: 'center',
             textTransform: 'uppercase',
-            textShadow:
-              '5px 5px 3px #000, -5px 5px 3px #000, -5px -5px 0 #000, 5px -5px 0 #000',
+            textShadow: '0 0 5px #000, 0 0 5px #000, 0 0 5px #000, 0 0 5px #000',
           }}
         >
           {text}

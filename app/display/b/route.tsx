@@ -47,8 +47,7 @@ export async function GET(request: Request) {
             fontFamily: '"Oswald Bold"',
             textAlign: 'center',
             textTransform: 'uppercase',
-            textShadow:
-              '4px 4px 3px #000, -4px 4px 3px #000, -4px -4px 0 #000, 4px -4px 0 #000',
+            textShadow: '0 0 5px #000, 0 0 5px #000, 0 0 5px #000, 0 0 5px #000',
           }}
         >
           {text}
