@@ -1,3 +1,5 @@
+//boilerplate image generation - with static image
+
 import { ImageResponse } from 'next/og'
 // App router includes @vercel/og.
 // No need to install it.
@@ -11,7 +13,7 @@ export async function GET(request: Request) {
   const text = hasText ? searchParams.get('text')?.slice(0, 100) : ''
 
   const imageData = await fetch(
-    new URL('./meme-kevin.jpg', import.meta.url)
+    new URL('./placeholder.jpg', import.meta.url)
   ).then((res) => res.arrayBuffer())
 
   const fontData = await fetch(

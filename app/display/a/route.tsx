@@ -31,7 +31,7 @@ export async function GET(request: Request) {
       >
         {profileImage ? (
           // @ts-ignore
-          <img width="1200" height="630" alt="Profile" src={profileImage} />
+          <img width="1200" height="1200" alt="Profile" src={profileImage} />
         ) : (
           <div
             style={{
@@ -62,7 +62,7 @@ export async function GET(request: Request) {
     ),
     {
       width: 1200,
-      height: 630,
+      height: 1200,
       fonts: [
         {
           name: 'Tweakmodern Regular',

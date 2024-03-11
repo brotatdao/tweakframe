@@ -101,12 +101,14 @@ app.frame('/claim', async (c) => {
       return c.res({
         action: '/',
         image: `${process.env.NEXT_PUBLIC_SITE_URL}/display/a?text=${encodeURIComponent(`it's official you're ${username}.tweakin.eth`)}&profileImage=${encodeURIComponent(profileImage!)}`,
+        imageAspectRatio: '1:1',
         intents: [<Button>Start Over 🔄</Button>],
       })
     } else if (error === 'Name already claimed') {
       return c.res({
         action: '/',
         image: `${process.env.NEXT_PUBLIC_SITE_URL}/display/a?text=${encodeURIComponent(`${username} is already a tweak`)}&profileImage=${encodeURIComponent(profileImage!)}`,
+        imageAspectRatio: '1:1',
         intents: [<Button>Start Over 🔄</Button>],
       })
     } else {
