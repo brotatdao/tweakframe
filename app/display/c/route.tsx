@@ -26,7 +26,8 @@ export async function GET(request: Request) {
     // Resize and compress the image using sharp
     const optimizedBuffer = await sharp(imageBuffer)
       .resize({ width: 1200, height: 1200, fit: 'cover' })
-      .jpeg({ quality: 70 }) // Reduce the quality to further compress the image
+      .jpeg({ quality: 70 }) // Reduce quality to compress the image - or use png
+      // .png({ compressionLevel: 9, adaptiveFiltering: true, force: true }) 
       .toBuffer();
 
     optimizedImage = optimizedBuffer.buffer.slice(
@@ -41,7 +42,8 @@ export async function GET(request: Request) {
     // Resize and compress the default image using sharp
     const optimizedBuffer = await sharp(defaultImageBuffer)
       .resize({ width: 1200, height: 1200, fit: 'cover' })
-      .jpeg({ quality: 70 }) // Reduce the quality to further compress the image
+      .jpeg({ quality: 70 }) // Reduce quality to compress the image - or use png
+      // .png({ compressionLevel: 9, adaptiveFiltering: true, force: true }) 
       .toBuffer();
 
     optimizedImage = optimizedBuffer.buffer.slice(
