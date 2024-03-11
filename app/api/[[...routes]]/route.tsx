@@ -17,9 +17,10 @@ const app = new Frog({
 app.frame('/', (c) => {
   return c.res({
     action: '/claim',
-    image: `${process.env.NEXT_PUBLIC_SITE_URL}/site-preview.jpg`,
+    image: `${process.env.NEXT_PUBLIC_SITE_URL}/alltweaks.png`,
+    imageAspectRatio: '1:1',
     intents: [
-      <Button value="start">Get Started</Button>
+      <Button value="start">Claim a subdomain and make it official.</Button>
     ],
   })
 })
@@ -100,14 +101,16 @@ app.frame('/claim', async (c) => {
     if (success) {
       return c.res({
         action: '/',
-        image: `${process.env.NEXT_PUBLIC_SITE_URL}/meme/a?text=${encodeURIComponent(`${username} claimed`)}`,
-        intents: [<Button>Start Over 🔄</Button>],
+        image: `${process.env.NEXT_PUBLIC_SITE_URL}/display/a?text=${encodeURIComponent(`welcome ${username}.tweakin.eth`)}&profileImage=${encodeURIComponent(profileImage!)}`,
+        imageAspectRatio: '1:1',
+        intents: [<Button>Start Over Tweak</Button>],
       })
     } else if (error === 'Name already claimed') {
       return c.res({
         action: '/',
-        image: `${process.env.NEXT_PUBLIC_SITE_URL}/meme/a?text=${encodeURIComponent(`${username} already claimed`)}`,
-        intents: [<Button>Start Over 🔄</Button>],
+        image: `${process.env.NEXT_PUBLIC_SITE_URL}/display/a?text=${encodeURIComponent(`${username} is already a tweak`)}&profileImage=${encodeURIComponent(profileImage!)}`,
+        imageAspectRatio: '1:1',
+        intents: [<Button>Start Over Tweak</Button>],
       })
     } else {
       return c.res({
@@ -117,7 +120,7 @@ app.frame('/claim', async (c) => {
             Error: {error}
           </div>
         ),
-        intents: [<Button>Try Again</Button>],
+        intents: [<Button>Try Again Tweak</Button>],
       })
     }
   }
@@ -128,7 +131,7 @@ app.frame('/claim', async (c) => {
         Invalid User
       </div>
     ),
-    intents: [<Button>Start Over 🔄</Button>],
+    intents: [<Button>Try Again Tweak</Button>],
   })
 })
 
