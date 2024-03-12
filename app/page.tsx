@@ -1,3 +1,15 @@
+import { getFrameMetadata } from 'frog/next'
+import type { Metadata } from 'next'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const frameTags = await getFrameMetadata(
+    `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api`,
+  )
+  return {
+    other: frameTags,
+  }
+}
+
 export default function Home() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

@@ -4,6 +4,7 @@ import { Button, Frog, TextInput } from 'frog'
 import { neynar } from 'frog/hubs'
 import { handle } from 'frog/next'
 import { getUserDataForFid, getAddressForFid } from "frames.js"
+import { PinataFDK } from 'pinata-fdk'
 
 
 const app = new Frog({
@@ -11,8 +12,15 @@ const app = new Frog({
   hub: neynar({ apiKey: process.env.NEYNAR_API_KEY || 'NEYNAR_FROG_FM' })
 })
 
-// Uncomment to use Edge Runtime
-// export const runtime = 'edge'
+const fdk = new PinataFDK({
+  pinata_jwt: process.env.PINATA_JWT || '',
+  pinata_gateway: process.env.PINATA_IPFS_GATEWAY || ''
+})
+ 
+app.use('/', fdk.analyticsMiddleware({
+  frameId: 'tweakin',
+  customId: 'firsttweak',
+}))
 
 app.frame('/', (c) => {
   return c.res({
