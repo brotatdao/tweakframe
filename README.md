@@ -30,6 +30,10 @@ First - Set up .env file
 
 Then - change `NEXT_PUBLIC_URL` in `/app/config.ts` to a production URL or the ngrok tunnel below
 
+Then - change project name at ``` bash pinata.pinFileToIPFS(Readable.from(htmlBuffer), { pinataMetadata: { name: `PROJECTNAME/${profileName}/index.html` } } ```
+
+Then - change the ens domain passed from route.tsx to the registerSubdomain API ie. domain: 'tweakin.eth',
+
 ```bash
 pnpm install
 ```

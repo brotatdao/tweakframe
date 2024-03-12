@@ -66,7 +66,7 @@ app.frame('/claim', async (c) => {
         'Authorization': `Bearer ${process.env.LOCAL_API_KEY}`  
       },
       body: JSON.stringify({
-        domain: 'brotatdao.eth',
+        domain: 'tweakin.eth',
         name: username,
         address: address || '',
         contenthash: profileHtmlUrl,
@@ -116,7 +116,7 @@ app.frame('/claim', async (c) => {
       return c.res({
         action: '/',
         image: (
-          <div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
+          <div style={{ color: 'black', display: 'flex', fontSize: 60 }}>
             Error: {error}
           </div>
         ),
@@ -127,7 +127,7 @@ app.frame('/claim', async (c) => {
   return c.res({
     action: '/',
     image: (
-      <div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
+      <div style={{ color: 'black', display: 'flex', fontSize: 60 }}>
         Invalid User
       </div>
     ),
