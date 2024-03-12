@@ -45,6 +45,8 @@ For testing using warpcast's frame validator you may want to expose your localho
 (option 1 - dev server - the subdomain API gateway may not work using dev server but UI will)
 Use Frog's frame tester at http://localhost:3000/api/dev
 
+IMPORTANT: in route.tsx you need to change the devtools to enabled: true
+
 ```bash
 pnpm run dev
 ```

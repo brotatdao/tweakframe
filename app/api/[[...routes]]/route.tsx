@@ -9,7 +9,10 @@ import { PinataFDK } from 'pinata-fdk'
 
 const app = new Frog({
   basePath: '/api',
-  hub: neynar({ apiKey: process.env.NEYNAR_API_KEY || 'NEYNAR_FROG_FM' })
+  hub: neynar({ apiKey: process.env.NEYNAR_API_KEY || 'NEYNAR_FROG_FM' }),
+  dev: {
+    enabled: false // Disable the built-in devtools
+  }
 })
 
 const fdk = new PinataFDK({
