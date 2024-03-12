@@ -63,8 +63,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Upload to Pinata IPFS
       console.log('Attempting Pinata IPFS upload...');
       const uploadResults = await Promise.all([
-          pinata.pinFileToIPFS(Readable.from(htmlBuffer), { pinataMetadata: { name: `${profileName}/index.html` } }),
-          pinata.pinFileToIPFS(Readable.from(profilePicBuffer), { pinataMetadata: { name: `${profileName}/profile-pic` } }) 
+          pinata.pinFileToIPFS(Readable.from(htmlBuffer), { pinataMetadata: { name: `tweakin/${profileName}/index.html` } }),
+          pinata.pinFileToIPFS(Readable.from(profilePicBuffer), { pinataMetadata: { name: `tweakin/${profileName}/profile-pic` } }) 
       ]);
 
       const htmlFileCid = uploadResults[0].IpfsHash;
