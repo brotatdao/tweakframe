@@ -17,15 +17,15 @@ const app = new Frog({
 //  origin: `${process.env.NEXT_PUBLIC_URL}`,
   hub: neynar({ apiKey: process.env.NEYNAR_API_KEY || 'NEYNAR_FROG_FM' }),
 //  verify: 'silent',
- headers: {
-    'Cache-Control': 'max-age=0',
-  },
-  honoOptions: {
-    getPath: (req) => '/' + req.headers.get('host') + req.url.replace(/^https?:\/\/[^/]+(\/[^?]*)/, '$1'),
-  },
-  dev: {
-    enabled: false // Disable the built-in devtools
-  }
+// headers: {
+//    'Cache-Control': 'max-age=0',
+//  },
+//  honoOptions: {
+//    getPath: (req) => '/' + req.headers.get('host') + req.url.replace(/^https?:\/\/[^/]+(\/[^?]*)/, '$1'),
+//  },
+//  dev: {
+//    enabled: false // Disable the built-in devtools
+//  }
 })
 
 const fdk = new PinataFDK({
