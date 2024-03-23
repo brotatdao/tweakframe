@@ -1,21 +1,23 @@
 /** @jsxImportSource frog/jsx */
 
 import { Button, Frog, TextInput } from 'frog'
+import { devtools } from 'frog/dev'
 import { neynar } from 'frog/hubs'
 import { handle } from 'frog/next'
 import { getUserDataForFid, getAddressForFid } from "frames.js"
 import { PinataFDK } from 'pinata-fdk'
+import { serveStatic } from 'frog/serve-static'
 
 
 const app = new Frog({
   assetsPath: '/',
   basePath: '/api',
-  browserLocation: '/',
-  secret: process.env.FROG_SECRET_KEY,
-  origin: `${process.env.NEXT_PUBLIC_SITE_URL}`,
+//  browserLocation: '/',
+//  secret: process.env.FROG_SECRET_KEY,
+//  origin: `${process.env.NEXT_PUBLIC_URL}`,
   hub: neynar({ apiKey: process.env.NEYNAR_API_KEY || 'NEYNAR_FROG_FM' }),
-  verify: 'silent',
-  headers: {
+//  verify: 'silent',
+ headers: {
     'Cache-Control': 'max-age=0',
   },
   honoOptions: {
@@ -38,11 +40,10 @@ app.use('/', fdk.analyticsMiddleware({
 
 app.frame('/', (c) => {
   return c.res({
-    action: '/claim',
-    image: `${process.env.NEXT_PUBLIC_SITE_URL}/alltweaks.png`,
+    image: `${process.env.NEXT_PUBLIC_URL}/alltweaks.png`,
     imageAspectRatio: '1:1',
     intents: [
-      <Button value="start">Claim a subdomain and make it official.</Button>
+      <Button value="start" action="/claim">Claim a subdomain and make it official.</Button>
     ],
   })
 })
@@ -61,7 +62,7 @@ app.frame('/claim', async (c) => {
     const { profileImage, displayName, username, bio } = userData || {}
 
     // --- 1. Profile Upload ---
-    const profileUploadResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/ipfsUpload`, {
+    const profileUploadResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ipfsUpload`, {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -81,7 +82,7 @@ app.frame('/claim', async (c) => {
     const { profileHtmlUrl, profilePicUrl } = await profileUploadResponse.json()
 
     // --- 2. ENS Registration ---
-    const registerResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/registerSubdomain`, {
+    const registerResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/registerSubdomain`, {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -103,7 +104,7 @@ app.frame('/claim', async (c) => {
     const { success, error } = await registerResponse.json()
 
     // --- 3. Firestore Save ---
-    await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/databaseUpload`, {
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/databaseUpload`, {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -123,14 +124,14 @@ app.frame('/claim', async (c) => {
     if (success) {
       return c.res({
         action: '/',
-        image: `${process.env.NEXT_PUBLIC_SITE_URL}/display/a?text=${encodeURIComponent(`welcome ${username}.tweakin.eth`)}&profileImage=${encodeURIComponent(profileImage!)}`,
+        image: `${process.env.NEXT_PUBLIC_URL}/display/a?text=${encodeURIComponent(`welcome ${username}.tweakin.eth`)}&profileImage=${encodeURIComponent(profileImage!)}`,
         imageAspectRatio: '1:1',
         intents: [<Button>Start Over Tweak</Button>],
       })
     } else if (error === 'Name already claimed') {
       return c.res({
         action: '/',
-        image: `${process.env.NEXT_PUBLIC_SITE_URL}/display/a?text=${encodeURIComponent(`${username} is already a tweak`)}&profileImage=${encodeURIComponent(profileImage!)}`,
+        image: `${process.env.NEXT_PUBLIC_URL}/display/a?text=${encodeURIComponent(`${username} is already a tweak`)}&profileImage=${encodeURIComponent(profileImage!)}`,
         imageAspectRatio: '1:1',
         intents: [<Button>Start Over Tweak</Button>],
       })
@@ -156,6 +157,8 @@ app.frame('/claim', async (c) => {
     intents: [<Button>Try Again Tweak</Button>],
   })
 })
+
+//devtools(app, { serveStatic })
 
 export const GET = handle(app)
 export const POST = handle(app)
