@@ -8,8 +8,19 @@ import { PinataFDK } from 'pinata-fdk'
 
 
 const app = new Frog({
+  assetsPath: '/',
   basePath: '/api',
+  browserLocation: '/',
+  secret: process.env.FROG_SECRET_KEY,
+  origin: `${process.env.NEXT_PUBLIC_SITE_URL}`,
   hub: neynar({ apiKey: process.env.NEYNAR_API_KEY || 'NEYNAR_FROG_FM' }),
+  verify: 'silent',
+  headers: {
+    'Cache-Control': 'max-age=0',
+  },
+  honoOptions: {
+    getPath: (req) => '/' + req.headers.get('host') + req.url.replace(/^https?:\/\/[^/]+(\/[^?]*)/, '$1'),
+  },
   dev: {
     enabled: false // Disable the built-in devtools
   }
