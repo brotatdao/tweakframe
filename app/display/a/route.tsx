@@ -9,7 +9,7 @@ export async function GET(request: Request) {
   const text = hasText ? searchParams.get('text')?.slice(0, 100) : ''
 
   const hasProfileImage = searchParams.has('profileImage')
-  const profileImage = hasProfileImage ? searchParams.get('profileImage') : `${process.env.NEXT_PUBLIC_SITE_URL}/default.jpg`
+  const profileImage = hasProfileImage ? searchParams.get('profileImage') : `${process.env.NEXT_PUBLIC_SITE_URL}/blanktweak.jpg`
 
   const fontData = await fetch(
     new URL('../../../assets/Tweakmodern-Regular.ttf', import.meta.url)
