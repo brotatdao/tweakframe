@@ -1,6 +1,6 @@
 /** @jsxImportSource frog/jsx */
 
-import { Button, Frog, TextInput } from 'frog'
+import { Button, Frog } from 'frog'
 import { devtools } from 'frog/dev'
 import { neynar } from 'frog/hubs'
 import { handle } from 'frog/next'
@@ -17,12 +17,6 @@ const app = new Frog({
   origin: `${process.env.NEXT_PUBLIC_URL}`,
   hub: neynar({ apiKey: process.env.NEYNAR_API_KEY || 'NEYNAR_FROG_FM' }),
   verify: 'silent',
-// headers: {
-//    'Cache-Control': 'max-age=0',
-//  },
-//  honoOptions: {
-//    getPath: (req) => '/' + req.headers.get('host') + req.url.replace(/^https?:\/\/[^/]+(\/[^?]*)/, '$1'),
-//  },
   dev: { enabled: false }
 })
 
