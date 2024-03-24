@@ -39,11 +39,12 @@ const app = new Frog({
 //}))
 
 app.frame('/', (c) => {
+  const { buttonValue, status } = c
   return c.res({
     image: `${process.env.NEXT_PUBLIC_URL}/alltweaks.png`,
     imageAspectRatio: '1:1',
     intents: [
-      <Button value="start" action="/claim">Claim a subdomain and make it official.</Button>
+      <Button value="claim" action="/claim">Claim a subdomain and make it official.</Button>
     ],
   })
 })
@@ -158,7 +159,7 @@ app.frame('/claim', async (c) => {
   })
 })
 
-//devtools(app, { serveStatic })
+devtools(app, { serveStatic })
 
 export const GET = handle(app)
 export const POST = handle(app)

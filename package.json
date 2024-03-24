@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "frog dev",
     "build": "next build",
     "deploy": "vercel",
     "start": "next start",
