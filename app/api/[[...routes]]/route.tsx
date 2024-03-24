@@ -85,11 +85,7 @@ app.frame('/claim', async (c) => {
     } else {
       return c.res({
         action: '/',
-        image: (
-          <div style={{ color: 'black', display: 'flex', fontSize: 60 }}>
-            Error: {error}
-          </div>
-        ),
+        image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=${encodeURIComponent(error)}`,
         intents: [<Button>Try Again Tweak</Button>],
       })
     }
@@ -112,11 +108,7 @@ app.frame('/claim', async (c) => {
   if (!profileUploadResponse.ok) {
     return c.res({
       action: '/',
-      image: (
-        <div style={{ color: 'black', display: 'flex', fontSize: 60 }}>
-          TWEAK!: Profile upload to IPFS failed
-        </div>
-      ),
+      image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=Error:%20IPFS%20upload%20failed`,
       intents: [<Button>Try Again Tweak</Button>],
     })
   }
@@ -144,11 +136,7 @@ app.frame('/claim', async (c) => {
   if (!firestoreResponse.ok) {
     return c.res({
       action: '/',
-      image: (
-        <div style={{ color: 'black', display: 'flex', fontSize: 60 }}>
-          TWEAK!: Database save failed
-        </div>
-      ),
+      image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=Error:%20Database%20upload%20failed`,
       intents: [<Button>Try Again Tweak</Button>],
     })
   }

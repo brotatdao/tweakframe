@@ -13,11 +13,11 @@ export async function GET(request: Request) {
   const text = hasText ? searchParams.get('text')?.slice(0, 100) : ''
 
   const imageData = await fetch(
-    new URL('./placeholder.jpg', import.meta.url)
+    new URL('./errortweak.jpg', import.meta.url)
   ).then((res) => res.arrayBuffer())
 
   const fontData = await fetch(
-    new URL('../../../assets/Oswald-Bold.ttf', import.meta.url)
+    new URL('../../../assets/Tweakmodern-Regular.ttf', import.meta.url)
   ).then((res) => res.arrayBuffer())
 
   return new ImageResponse(
@@ -43,8 +43,8 @@ export async function GET(request: Request) {
             paddingBottom: 20,
             color: '#ffffff',
             lineHeight: 1,
-            fontSize: 60,
-            fontFamily: '"Oswald Bold"',
+            fontSize: 100,
+            fontFamily: '"Tweakmodern Regular"',
             textAlign: 'center',
             textTransform: 'uppercase',
             textShadow: '0 0 5px #000, 0 0 5px #000, 0 0 5px #000, 0 0 5px #000',
@@ -55,11 +55,11 @@ export async function GET(request: Request) {
       </div>
     ),
     {
-      width: 630,
-      height: 630,
+      width: 1200,
+      height: 1200,
       fonts: [
         {
-          name: 'Oswald Bold',
+          name: 'Tweakmodern Regular',
           data: fontData,
           style: 'normal',
         },
