@@ -13,10 +13,10 @@ const app = new Frog({
   assetsPath: '/',
   basePath: '/api',
 //  browserLocation: '/',
-  secret: process.env.FROG_SECRET_KEY,
+//  secret: process.env.FROG_SECRET_KEY,
   origin: `${process.env.NEXT_PUBLIC_URL}`,
   hub: neynar({ apiKey: process.env.NEYNAR_API_KEY || 'NEYNAR_FROG_FM' }),
-  verify: 'silent',
+//  verify: 'silent',
 // headers: {
 //    'Cache-Control': 'max-age=0',
 //  },
@@ -120,9 +120,7 @@ app.frame('/claim', async (c) => {
     })
 
     if (success) {
-      // Construct the frame URL dynamically
-      const successUrl = `${process.env.NEXT_PUBLIC_URL}${c.req.url}`; 
-      
+
       return c.res({
         action: '/',
         image: `${process.env.NEXT_PUBLIC_URL}/display/a?text=${encodeURIComponent(`welcome ${username}.tweakin.eth`)}&profileImage=${encodeURIComponent(profileImage!)}`,
