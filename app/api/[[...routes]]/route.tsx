@@ -14,7 +14,7 @@ const app = new Frog({
   basePath: '/api',
 //  browserLocation: '/',
 //  secret: process.env.FROG_SECRET_KEY,
-//  origin: `${process.env.NEXT_PUBLIC_URL}`,
+  origin: `${process.env.NEXT_PUBLIC_URL}`,
   hub: neynar({ apiKey: process.env.NEYNAR_API_KEY || 'NEYNAR_FROG_FM' }),
 //  verify: 'silent',
 // headers: {
@@ -28,15 +28,15 @@ const app = new Frog({
 //  }
 })
 
-const fdk = new PinataFDK({
-  pinata_jwt: process.env.PINATA_JWT || '',
-  pinata_gateway: process.env.PINATA_IPFS_GATEWAY || ''
-})
+//const fdk = new PinataFDK({
+//  pinata_jwt: process.env.PINATA_JWT || '',
+//  pinata_gateway: process.env.PINATA_IPFS_GATEWAY || ''
+//})
  
-app.use('/', fdk.analyticsMiddleware({
-  frameId: 'tweakin',
-  customId: 'firsttweak',
-}))
+//app.use('/', fdk.analyticsMiddleware({
+//  frameId: 'tweakin',
+//  customId: 'firsttweak',
+//}))
 
 app.frame('/', (c) => {
   return c.res({
