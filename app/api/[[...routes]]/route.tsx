@@ -86,6 +86,7 @@ app.frame('/claim', async (c) => {
       return c.res({
         action: '/',
         image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=${encodeURIComponent(error)}`,
+        imageAspectRatio: '1:1',
         intents: [<Button>Try Again Tweak</Button>],
       })
     }
@@ -109,6 +110,7 @@ app.frame('/claim', async (c) => {
     return c.res({
       action: '/',
       image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=Error:%20IPFS%20upload%20failed`,
+      imageAspectRatio: '1:1',
       intents: [<Button>Try Again Tweak</Button>],
     })
   }
@@ -137,6 +139,7 @@ app.frame('/claim', async (c) => {
     return c.res({
       action: '/',
       image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=Error:%20Database%20upload%20failed`,
+      imageAspectRatio: '1:1',
       intents: [<Button>Try Again Tweak</Button>],
     })
   }
