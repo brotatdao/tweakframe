@@ -48,19 +48,7 @@ app.frame('/', (c) => {
 })
 
 app.frame('/claim', async (c) => {
-  const { verified } = c;
   
-  // Check if the frame data is verified
-  if (!verified) {
-    console.error('Frame verification failed');
-    // Optionally handle unverified frames, for example, by informing the user
-    return c.res({
-      action: '/',
-      image: `${process.env.NEXT_PUBLIC_URL}/tweakerror.png`, // Provide an appropriate error image
-      imageAspectRatio: '1:1',
-      intents: [<Button>Try Again</Button>],
-    });
-  }
     const { fid } = c.frameData!
     const address = await getAddressForFid({
       fid,
