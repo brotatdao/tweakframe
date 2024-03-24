@@ -15,7 +15,7 @@ const app = new Frog({
 //  browserLocation: '/',
 //  secret: process.env.FROG_SECRET_KEY,
   origin: `${process.env.NEXT_PUBLIC_URL}`,
-  hub: neynar({ apiKey: `${process.env.NEYNAR_API_KEY}`}),
+  hub: neynar({ apiKey: process.env.NEYNAR_API_KEY || 'NEYNAR_FROG_FM' }),
   verify: 'silent',
 // headers: {
 //    'Cache-Control': 'max-age=0',
@@ -26,15 +26,15 @@ const app = new Frog({
   dev: { enabled: false }
 })
 
-//const fdk = new PinataFDK({
-//  pinata_jwt: process.env.PINATA_JWT || '',
-//  pinata_gateway: process.env.PINATA_IPFS_GATEWAY || ''
-//})
+const fdk = new PinataFDK({
+  pinata_jwt: process.env.PINATA_JWT || '',
+  pinata_gateway: process.env.PINATA_IPFS_GATEWAY || ''
+})
  
-//app.use('/', fdk.analyticsMiddleware({
-//  frameId: 'tweakin',
-//  customId: 'firsttweak',
-//}))
+app.use('/', fdk.analyticsMiddleware({
+  frameId: 'tweakin',
+  customId: 'firsttweak',
+}))
 
 app.frame('/', (c) => {
   return c.res({
@@ -48,17 +48,7 @@ app.frame('/', (c) => {
 })
 
 app.frame('/claim', async (c) => {
-  // Check if the frame data is verified
-  if (!c.verified) {
-    console.error('Frame verification failed');
-    // Optionally handle unverified frames, for example, by informing the user
-    return c.res({
-      action: '/',
-      image: `${process.env.NEXT_PUBLIC_URL}/tweakerror.png`, // Provide an appropriate error image
-      imageAspectRatio: '1:1',
-      intents: [<Button>Try Again</Button>],
-    });
-  }
+  
     const { fid } = c.frameData!
     const address = await getAddressForFid({
       fid,
