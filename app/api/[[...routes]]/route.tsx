@@ -13,19 +13,17 @@ const app = new Frog({
   assetsPath: '/',
   basePath: '/api',
 //  browserLocation: '/',
-//  secret: process.env.FROG_SECRET_KEY,
+  secret: process.env.FROG_SECRET_KEY,
   origin: `${process.env.NEXT_PUBLIC_URL}`,
   hub: neynar({ apiKey: process.env.NEYNAR_API_KEY || 'NEYNAR_FROG_FM' }),
-//  verify: 'silent',
+  verify: 'silent',
 // headers: {
 //    'Cache-Control': 'max-age=0',
 //  },
 //  honoOptions: {
 //    getPath: (req) => '/' + req.headers.get('host') + req.url.replace(/^https?:\/\/[^/]+(\/[^?]*)/, '$1'),
 //  },
-//  dev: {
-//    enabled: false // Disable the built-in devtools
-//  }
+  dev: { enabled: false }
 })
 
 //const fdk = new PinataFDK({
@@ -39,7 +37,6 @@ const app = new Frog({
 //}))
 
 app.frame('/', (c) => {
-  const { buttonValue, status } = c
   return c.res({
     image: `${process.env.NEXT_PUBLIC_URL}/alltweaks.png`,
     imageAspectRatio: '1:1',
@@ -123,6 +120,9 @@ app.frame('/claim', async (c) => {
     })
 
     if (success) {
+      // Construct the frame URL dynamically
+      const successUrl = `${process.env.NEXT_PUBLIC_URL}${c.req.url}`; 
+      
       return c.res({
         action: '/',
         image: `${process.env.NEXT_PUBLIC_URL}/display/a?text=${encodeURIComponent(`welcome ${username}.tweakin.eth`)}&profileImage=${encodeURIComponent(profileImage!)}`,
