@@ -16,7 +16,7 @@ const app = new Frog({
 //  secret: process.env.FROG_SECRET_KEY,
   origin: `${process.env.NEXT_PUBLIC_URL}`,
   hub: neynar({ apiKey: `${process.env.NEYNAR_API_KEY}`}),
-  verify: 'silent',
+//  verify: 'silent',
 // headers: {
 //    'Cache-Control': 'max-age=0',
 //  },
