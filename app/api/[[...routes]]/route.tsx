@@ -98,15 +98,24 @@ const registerResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/registe
   }),
 });
 
-const registerData = await registerResponse.json();
-if (!registerData.success) {
-  const errorMessage = encodeURIComponent(registerData.error || "ENS registration failed");
-  return c.res({
-    action: '/',
-    image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=${errorMessage}`,
-    imageAspectRatio: '1:1',
-    intents: [<Button>Try Again Tweak</Button>],
-  });
+const { success, error } = await registerResponse.json();
+
+if (!success) {
+  if (error === 'Name already claimed') {
+    return c.res({
+      action: '/',
+      image: `${process.env.NEXT_PUBLIC_URL}/display/a?text=${encodeURIComponent(`${username} is already a tweak`)}&profileImage=${encodeURIComponent(profileImage!)}`,
+      imageAspectRatio: '1:1',
+      intents: [<Button.Link href="https://tweaklabs.xyz">Go to tweaklabs.xyz</Button.Link>],
+    });
+  } else {
+    return c.res({
+      action: '/',
+      image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=${encodeURIComponent(`Error: ${error}`)}`,
+      imageAspectRatio: '1:1',
+      intents: [<Button>Try Again Tweak</Button>],
+    });
+  }
 }
 
 // --- 3. Firestore Save ---
@@ -141,7 +150,7 @@ const firestoreResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/databa
     action: '/',
     image: `${process.env.NEXT_PUBLIC_URL}/display/a?text=${encodeURIComponent(`welcome ${username}.tweakin.eth`)}&profileImage=${encodeURIComponent(profileImage!)}`,
     imageAspectRatio: '1:1',
-    intents: [<Button>Start Over Tweak</Button>],
+    intents: [<Button.Link href={`https://${username}.tweakin.eth.limo`}>{`${username}.tweakin.eth.limo`}</Button.Link>],
   })
 })
 
