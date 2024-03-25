@@ -105,7 +105,7 @@ if (!registerData.success) {
       action: '/',
       image: `${process.env.NEXT_PUBLIC_URL}/display/a?text=${encodeURIComponent(`${username} is already a tweak`)}&profileImage=${encodeURIComponent(profilePicUrl)}`,
       imageAspectRatio: '1:1',
-      intents: [<Button>Start Over Tweak</Button>],
+      intents: <Button.Link href="https://tweaklabs.xyz">Check out tweaklabs.xyz</Button.Link>,
     });
   } else {
     const errorMessage = encodeURIComponent(registerData.error || "ENS registration failed");
@@ -150,7 +150,7 @@ const firestoreResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/databa
     action: '/',
     image: `${process.env.NEXT_PUBLIC_URL}/display/a?text=${encodeURIComponent(`welcome ${username}.tweakin.eth`)}&profileImage=${encodeURIComponent(profileImage!)}`,
     imageAspectRatio: '1:1',
-    intents: [<Button>Start Over Tweak</Button>],
+    intents: [<Button.Link href={`https://${username}.tweakin.eth.limo`}>{`${username}.tweakin.eth.limo`}</Button.Link>],
   })
 })
 
