@@ -98,20 +98,20 @@ const registerResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/registe
   }),
 });
 
-const registerData = await registerResponse.json();
-if (!registerData.success) {
-  if (registerData.error === 'Name already claimed') {
+const { success, error } = await registerResponse.json();
+
+if (!success) {
+  if (error === 'Name already claimed') {
     return c.res({
       action: '/',
-      image: `${process.env.NEXT_PUBLIC_URL}/display/a?text=${encodeURIComponent(`${username} is already a tweak`)}&profileImage=${encodeURIComponent(profilePicUrl)}`,
+      image: `${process.env.NEXT_PUBLIC_URL}/display/a?text=${encodeURIComponent(`${username} is already a tweak`)}&profileImage=${encodeURIComponent(profileImage!)}`,
       imageAspectRatio: '1:1',
-      intents: <Button.Link href="https://tweaklabs.xyz">Check out tweaklabs.xyz</Button.Link>,
+      intents: [<Button.Link href="https://tweaklabs.xyz">Go to tweaklabs.xyz</Button.Link>],
     });
   } else {
-    const errorMessage = encodeURIComponent(registerData.error || "ENS registration failed");
     return c.res({
       action: '/',
-      image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=${errorMessage}`,
+      image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=${encodeURIComponent(`Error: ${error}`)}`,
       imageAspectRatio: '1:1',
       intents: [<Button>Try Again Tweak</Button>],
     });
