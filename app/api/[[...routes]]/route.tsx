@@ -52,96 +52,88 @@ app.frame('/claim', async (c) => {
   const userData = await getUserDataForFid({ fid })
   const { profileImage, displayName, username, bio } = userData || {}
 
-  // --- ENS Registration first ---
-  const registerResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/registerSubdomain`, {
-    method: 'POST',
-    headers: { 
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${process.env.LOCAL_API_KEY}`  
+ // --- 1. Profile Upload ---
+ const profileUploadResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ipfsUpload`, {
+  method: 'POST',
+  headers: { 
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${process.env.LOCAL_API_KEY}` 
+  },
+  body: JSON.stringify({
+    profileName: username,
+    bio,
+    profilePicUrl: profileImage,
+  }),
+});
+
+if (!profileUploadResponse.ok) {
+  return c.res({
+    action: '/',
+    image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=Profile%20upload%20to%20IPFS%20failed`,
+    imageAspectRatio: '1:1',
+    intents: [<Button>Try Again Tweak</Button>],
+  });
+}
+
+const { profileHtmlUrl, profilePicUrl } = await profileUploadResponse.json();
+
+// --- 2. ENS Registration  ---
+const registerResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/registerSubdomain`, {
+  method: 'POST',
+  headers: { 
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${process.env.LOCAL_API_KEY}`  
+  },
+  body: JSON.stringify({
+    domain: 'tweakin.eth',
+    name: username,
+    address: address || '',
+    contenthash: profileHtmlUrl,
+    text_records: {
+      "com.twitter": username,
+      "description": bio, 
+      "avatar": profilePicUrl,
     },
-    body: JSON.stringify({
-      domain: 'tweakin.eth',
-      name: username,
-      address: address || '',
-      contenthash: '',
-      text_records: {
-        "com.twitter": username,
-        "description": bio, 
-        "avatar": '',
-      },
-      single_claim: true,
-    }),
-  })
-  const { success, error } = await registerResponse.json()
+    single_claim: true,
+  }),
+});
 
-  if (!success) {
-    if (error === 'Name already claimed') {
-      return c.res({
-        action: '/',
-        image: `${process.env.NEXT_PUBLIC_URL}/display/a?text=${encodeURIComponent(`${username} is already a tweak`)}&profileImage=${encodeURIComponent(profileImage!)}`,
-        imageAspectRatio: '1:1',
-        intents: [<Button>Start Over Tweak</Button>],
-      })
-    } else {
-      return c.res({
-        action: '/',
-        image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=${encodeURIComponent(error)}`,
-        imageAspectRatio: '1:1',
-        intents: [<Button>Try Again Tweak</Button>],
-      })
-    }
-  }
+const registerData = await registerResponse.json();
+if (!registerData.success) {
+  const errorMessage = encodeURIComponent(registerData.error || "ENS registration failed");
+  return c.res({
+    action: '/',
+    image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=${errorMessage}`,
+    imageAspectRatio: '1:1',
+    intents: [<Button>Try Again Tweak</Button>],
+  });
+}
 
-  // If ENS Registration succeeds, proceed with Profile Upload
-  const profileUploadResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ipfsUpload`, {
-    method: 'POST',
-    headers: { 
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${process.env.LOCAL_API_KEY}` 
-    },
-    body: JSON.stringify({
-      profileName: username,
-      bio,
-      profilePicUrl: profileImage,
-    }),
-  })
-
-  if (!profileUploadResponse.ok) {
-    return c.res({
-      action: '/',
-      image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=Error:%20IPFS%20upload%20failed`,
-      imageAspectRatio: '1:1',
-      intents: [<Button>Try Again Tweak</Button>],
-    })
-  }
-
-  const { profileHtmlUrl, profilePicUrl } = await profileUploadResponse.json()
-
-  // Firestore Save
-  const firestoreResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/databaseUpload`, {
-    method: 'POST',
-    headers: { 
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${process.env.LOCAL_API_KEY}`
-    },
-    body: JSON.stringify({
-      profileName: username,
-      bio,
-      walletAddress: address || '', 
-      twitterHandle: username,
-      profileHtmlUrl,
-      profilePicUrl,
-      image_url: profileImage,
-    }),
-  })
+// --- 3. Firestore Save ---
+const firestoreResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/databaseUpload`, {
+  method: 'POST',
+  headers: { 
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${process.env.LOCAL_API_KEY}`
+  },
+  body: JSON.stringify({
+    profileName: username,
+    bio,
+    walletAddress: address || '', 
+    twitterHandle: username,
+    profileHtmlUrl,
+    profilePicUrl,
+    image_url: profileImage,
+  }),
+});
 
   if (!firestoreResponse.ok) {
     return c.res({
       action: '/',
-      image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=Error:%20Database%20upload%20failed`,
+      image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=Firestore%20save%20failed`,
       imageAspectRatio: '1:1',
       intents: [<Button>Try Again Tweak</Button>],
-    })
+    });
   }
 
   // If all operations are successful, display the success message
