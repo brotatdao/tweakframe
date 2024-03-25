@@ -100,13 +100,22 @@ const registerResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/registe
 
 const registerData = await registerResponse.json();
 if (!registerData.success) {
-  const errorMessage = encodeURIComponent(registerData.error || "ENS registration failed");
-  return c.res({
-    action: '/',
-    image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=${errorMessage}`,
-    imageAspectRatio: '1:1',
-    intents: [<Button>Try Again Tweak</Button>],
-  });
+  if (registerData.error === 'Name already claimed') {
+    return c.res({
+      action: '/',
+      image: `${process.env.NEXT_PUBLIC_URL}/display/a?text=${encodeURIComponent(`${username} is already a tweak`)}&profileImage=${encodeURIComponent(profilePicUrl)}`,
+      imageAspectRatio: '1:1',
+      intents: [<Button>Start Over Tweak</Button>],
+    });
+  } else {
+    const errorMessage = encodeURIComponent(registerData.error || "ENS registration failed");
+    return c.res({
+      action: '/',
+      image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=${errorMessage}`,
+      imageAspectRatio: '1:1',
+      intents: [<Button>Try Again Tweak</Button>],
+    });
+  }
 }
 
 // --- 3. Firestore Save ---
