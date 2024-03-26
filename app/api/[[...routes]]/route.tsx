@@ -90,7 +90,6 @@ const registerResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/registe
     address: address || '',
     contenthash: profileHtmlUrl,
     text_records: {
-      "com.twitter": username,
       "description": bio, 
       "avatar": profilePicUrl,
     },
@@ -129,6 +128,7 @@ const firestoreResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/databa
     profileName: username,
     bio,
     walletAddress: address || '', 
+    twitterHandle: username,
     profileHtmlUrl,
     profilePicUrl,
     image_url: profileImage,
