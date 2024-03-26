@@ -129,7 +129,6 @@ const firestoreResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/databa
     profileName: username,
     bio,
     walletAddress: address || '', 
-    twitterHandle: username,
     profileHtmlUrl,
     profilePicUrl,
     image_url: profileImage,
