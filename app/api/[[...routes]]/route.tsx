@@ -11,7 +11,7 @@ import { serveStatic } from 'frog/serve-static'
 
 const app = new Frog({
   assetsPath: '/',
-  basePath: '/',
+  basePath: '/api',
 //  browserLocation: '/',
 //  secret: process.env.FROG_SECRET_KEY,
   origin: `${process.env.NEXT_PUBLIC_URL}`,
