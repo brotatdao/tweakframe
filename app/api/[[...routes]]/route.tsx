@@ -90,7 +90,6 @@ const registerResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/registe
     address: address || '',
     contenthash: profileHtmlUrl,
     text_records: {
-      "com.twitter": username,
       "description": bio, 
       "avatar": profilePicUrl,
     },
