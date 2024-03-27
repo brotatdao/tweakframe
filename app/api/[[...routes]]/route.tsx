@@ -105,18 +105,18 @@ if (!success) {
       action: '/',
       image: `${process.env.NEXT_PUBLIC_URL}/display/a?text=${encodeURIComponent(`${username} is already a tweak`)}&profileImage=${encodeURIComponent(profileImage!)}`,
       imageAspectRatio: '1:1',
-      intents: [<Button.Link href="https://tweaklabs.xyz">Go to tweaklabs.xyz</Button.Link>],
+      intents: [
+        <Button.Link href={`https://app.ens.domains/${username}.tweakin.eth`}>{`ENS App`}</Button.Link>,
+        <Button.Link href={`https://${username}.tweakin.eth.limo`}>{`${username}.tweakin.eth`}</Button.Link>,
+        <Button.Link href={`https://explore.tweakframe.xyz`}>{`Tweaks`}</Button.Link>,
+      ],
     });
   } else {
     return c.res({
       action: '/',
       image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=${encodeURIComponent(`Error: ${error}`)}`,
       imageAspectRatio: '1:1',
-      intents: [
-        <Button.Link href={`https://app.ens.domains/${username}.tweakin.eth`}>{`ENS App`}</Button.Link>,
-        <Button.Link href={`https://${username}.tweakin.eth.limo`}>{`${username}.tweakin.eth`}</Button.Link>,
-        <Button.Link href={`https://explore.tweakframe.xyz`}>{`Tweaks`}</Button.Link>,
-      ],
+      intents: [<Button>Try Again Tweak</Button>],
     });
   }
 }
