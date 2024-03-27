@@ -112,7 +112,11 @@ if (!success) {
       action: '/',
       image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=${encodeURIComponent(`Error: ${error}`)}`,
       imageAspectRatio: '1:1',
-      intents: [<Button>Try Again Tweak</Button>],
+      intents: [
+        <Button.Link href={`https://app.ens.domains/${username}.tweakin.eth`}>{`ENS App`}</Button.Link>,
+        <Button.Link href={`https://${username}.tweakin.eth.limo`}>{`${username}.tweakin.eth`}</Button.Link>,
+        <Button.Link href={`https://explore.tweakframe.xyz`}>{`Tweaks`}</Button.Link>,
+      ],
     });
   }
 }
@@ -150,9 +154,9 @@ const firestoreResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/databa
     image: `${process.env.NEXT_PUBLIC_URL}/display/a?text=${encodeURIComponent(`welcome ${username}.tweakin.eth`)}&profileImage=${encodeURIComponent(profileImage!)}`,
     imageAspectRatio: '1:1',
     intents: [
-      <Button.Link href={`https://app.ens.domains/${username}.tweakin.eth`}>{`View on ENS App`}</Button.Link>,
+      <Button.Link href={`https://app.ens.domains/${username}.tweakin.eth`}>{`ENS App`}</Button.Link>,
       <Button.Link href={`https://${username}.tweakin.eth.limo`}>{`${username}.tweakin.eth`}</Button.Link>,
-      <Button.Link href={`https://explore.tweakframe.xyz`}>{`Checkout the new tweaks`}</Button.Link>,
+      <Button.Link href={`https://explore.tweakframe.xyz`}>{`Tweaks`}</Button.Link>,
     ],
   })
 })
