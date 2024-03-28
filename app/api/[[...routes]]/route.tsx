@@ -33,7 +33,7 @@ app.use('/', fdk.analyticsMiddleware({
 app.frame('/', (c) => {
   return c.res({
     action: '/claim',
-    image: `${process.env.NEXT_PUBLIC_URL}/alltweaks.png`,
+    image: `${process.env.NEXT_PUBLIC_URL}/tweakin.jpeg`,
     imageAspectRatio: '1:1',
     intents: [
       <Button value="claim">Claim a subdomain and make it official.</Button>
