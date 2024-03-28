@@ -36,7 +36,7 @@ app.frame('/', (c) => {
     image: `${process.env.NEXT_PUBLIC_URL}/tweakin.jpeg`,
     imageAspectRatio: '1:1',
     intents: [
-      <Button value="claim">Claim your Farcaster handle as a tweakin.eth subdomain</Button>
+      <Button value="claim">Claim tweakin.eth subdomain</Button>
     ],
   })
 })
