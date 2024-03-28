@@ -36,7 +36,7 @@ app.frame('/', (c) => {
     image: `${process.env.NEXT_PUBLIC_URL}/tweakin.jpeg`,
     imageAspectRatio: '1:1',
     intents: [
-      <Button value="claim">Claim a subdomain and make it official.</Button>
+      <Button value="claim">Claim your Farcaster handle as a tweakin.eth subdomain</Button>
     ],
   })
 })
@@ -108,7 +108,7 @@ if (!success) {
       intents: [
         <Button.Link href={`https://app.ens.domains/${username}.tweakin.eth`}>{`ENS App`}</Button.Link>,
         <Button.Link href={`https://${username}.tweakin.eth.limo`}>{`${username}.tweakin.eth`}</Button.Link>,
-        <Button.Link href={`https://explore.tweakframe.xyz`}>{`Tweaks`}</Button.Link>,
+        <Button.Link href={`https://explore.tweakframe.xyz`}>{`Explore Tweaks`}</Button.Link>,
       ],
     });
   } else {
@@ -156,7 +156,7 @@ const firestoreResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/databa
     intents: [
       <Button.Link href={`https://app.ens.domains/${username}.tweakin.eth`}>{`ENS App`}</Button.Link>,
       <Button.Link href={`https://${username}.tweakin.eth.limo`}>{`${username}.tweakin.eth`}</Button.Link>,
-      <Button.Link href={`https://explore.tweakframe.xyz`}>{`Tweaks`}</Button.Link>,
+      <Button.Link href={`https://explore.tweakframe.xyz`}>{`Explore Tweaks`}</Button.Link>,
     ],
   })
 })
