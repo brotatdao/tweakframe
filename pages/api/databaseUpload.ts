@@ -120,11 +120,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const profileDocRef = db.collection("Profiles").doc(firebaseUserId); 
 
-    // Logging for enhanced inspection (Feel free to remove in production)
-    console.log('db:', db); 
-    console.log('Firestore methods:', Object.keys(db)); 
-    console.log('profileData:', profileData);
-
     await profileDocRef.set(profileData); 
 
     res.status(200).json({ message: 'Profile saved to Firestore' });
