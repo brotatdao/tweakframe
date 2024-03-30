@@ -66,13 +66,27 @@ app.frame('/claim', async (c) => {
   }),
 });
 
+// Check if the response status is not OK
 if (!profileUploadResponse.ok) {
-  return c.res({
-    action: '/',
-    image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=Profile%20upload%20to%20IPFS%20failed`,
-    imageAspectRatio: '1:1',
-    intents: [<Button>Try Again Tweak</Button>],
-  });
+  // Attempt to parse the response body to access the error message
+  const errorBody = await profileUploadResponse.json();
+  // Handle the luigi error
+  if (errorBody.error === 'Missing required fields') {
+    return c.res({
+      action: '/',
+      image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=Add%20a%20bio%20or%20PFP%20to%20farcaster`,
+      imageAspectRatio: '1:1',
+      intents: [<Button>Try Again Tweak</Button>],
+    });
+  } else {
+    // Handle other types of errors
+    return c.res({
+      action: '/',
+      image: `${process.env.NEXT_PUBLIC_URL}/display/b?text=Profile%20upload%20to%20IPFS%20failed`,
+      imageAspectRatio: '1:1',
+      intents: [<Button>Try Again Tweak</Button>],
+    });
+  }
 }
 
 const { profileHtmlUrl, profilePicUrl } = await profileUploadResponse.json();
