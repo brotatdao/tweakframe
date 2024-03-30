@@ -21,14 +21,11 @@ const app = new Frog({
 })
 
 const fdk = new PinataFDK({
-  pinata_jwt: `${process.env.PINATA_JWT}`,
-  pinata_gateway: `${process.env.PINATA_IPFS_GATEWAY}`,
+  pinata_jwt: process.env.PINATA_JWT || "",
+  pinata_gateway: "",
 })
  
-app.use('/', fdk.analyticsMiddleware({
-  frameId: 'tweakin',
-  customId: 'firsttweak',
-}))
+app.use('/api', fdk.analyticsMiddleware({ frameId: 'tweakin-second' }))
 
 app.frame('/', (c) => {
   return c.res({
