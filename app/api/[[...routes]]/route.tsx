@@ -8,6 +8,10 @@ import { getUserDataForFid, getAddressForFid } from "frames.js"
 import { PinataFDK } from 'pinata-fdk'
 import { serveStatic } from 'frog/serve-static'
 
+const fdk = new PinataFDK({
+  pinata_jwt: process.env.PINATA_JWT || "",
+  pinata_gateway: "",
+})
 
 const app = new Frog({
   assetsPath: '/',
@@ -18,11 +22,6 @@ const app = new Frog({
   hub: neynar({ apiKey: process.env.NEYNAR_API_KEY || 'NEYNAR_FROG_FM' }),
   verify: 'silent',
   dev: { enabled: false }
-})
-
-const fdk = new PinataFDK({
-  pinata_jwt: process.env.PINATA_JWT || "",
-  pinata_gateway: "",
 })
  
 app.use('/api', fdk.analyticsMiddleware({ frameId: 'tweakin-second' }))
