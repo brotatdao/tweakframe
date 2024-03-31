@@ -8,6 +8,10 @@ import { getUserDataForFid, getAddressForFid } from "frames.js"
 import { PinataFDK } from 'pinata-fdk'
 import { serveStatic } from 'frog/serve-static'
 
+const fdk = new PinataFDK({
+  pinata_jwt: process.env.PINATA_JWT || "",
+  pinata_gateway: "",
+})
 
 const app = new Frog({
   assetsPath: '/',
@@ -19,13 +23,8 @@ const app = new Frog({
   verify: 'silent',
   dev: { enabled: false }
 })
-
-const fdk = new PinataFDK({
-  pinata_jwt: process.env.PINATA_JWT || "",
-  pinata_gateway: "",
-})
  
-app.use('/api', fdk.analyticsMiddleware({ frameId: 'tweakin-second' }))
+app.use('/claim', fdk.analyticsMiddleware({ frameId: 'tweakin-second' }))
 
 app.frame('/', (c) => {
   return c.res({
