@@ -24,7 +24,7 @@ const app = new Frog({
   dev: { enabled: false }
 })
  
-app.use('/api', fdk.analyticsMiddleware({ frameId: 'tweakin-second' }))
+app.use('/claim', fdk.analyticsMiddleware({ frameId: 'tweakin-second' }))
 
 app.frame('/', (c) => {
   return c.res({
