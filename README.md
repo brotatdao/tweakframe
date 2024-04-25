@@ -1,4 +1,5 @@
 # Ens Subdomain Frame
+Claim your farcaster username as an ens subdomain - free and gasless.  Automatically upload your farcaster profile pic and bio to an IPFS profile website and set it as the content that resolves at farcastname.tweakin.eth
 
 ## Namestone API
 You need a namestone API key - Get it here:
@@ -14,10 +15,6 @@ You need a neynar API key - Get it here:
 ## PINATA API
 You need a pinata api key to publish your files.  You will not be able to use the free plan as it does not allow for .html file uploads.
 [https://www.pinata.cloud/](https://www.pinata.cloud/)
-
-## NFT API  - OPENSEA or ZORA - set up for opensea
-If you would like to choose an NFT profile picture, you will need an Opensea API key - Get it here:
-[https://docs.opensea.io/reference/api-overview](https://docs.opensea.io/reference/api-overview)
 
 ## LOCAL API
 To protect your API endpoints from outside traffic, please set a local key of your choosing.
