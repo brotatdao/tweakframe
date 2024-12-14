@@ -1,69 +1,99 @@
-# Ens Subdomain Frame
-Claim your farcaster username as an ens subdomain - free and gasless.  Automatically upload your farcaster profile pic and bio to an IPFS profile website and set it as the content that resolves at farcastname.tweakin.eth
+# 🖼️ TweakFrame - Farcaster Frame for ENS Subdomains
 
-## Namestone API
-You need a namestone API key - Get it here:
-[https://namestone.xyz/try-namestone](https://namestone.xyz/try-namestone)
+Create gasless ENS subdomains for your Farcaster profile, automatically generating an IPFS-hosted profile page that resolves to `farcastname.tweakin.eth`.
 
-Your Admin Panel will be located here:
-[https://namestone.xyz/admin](https://namestone.xyz/admin)
+## ✨ Features
 
-## NEYNAR API
-You need a neynar API key - Get it here:
-[https://neynar.com/](https://neynar.com/)
+- 🔗 Claim Farcaster username as ENS subdomain
+- 🆓 Completely free and gasless
+- 🖼️ Auto-generates IPFS profile page
+- 🔄 Syncs Farcaster profile picture and bio
+- 🌐 Automatic ENS resolution setup
 
-## PINATA API
-You need a pinata api key to publish your files.  You will not be able to use the free plan as it does not allow for .html file uploads.
-[https://www.pinata.cloud/](https://www.pinata.cloud/)
+## 🔑 Prerequisites
 
-## LOCAL API
-To protect your API endpoints from outside traffic, please set a local key of your choosing.
+You'll need API keys from:
 
-## FIREBASE SERVICE ACCOUNT
-You need to set up a firebase service account to interact with the firestore database.  Go to your firebase account Project Settings > Service Accounts - and create a new service account.  You will be given a JSON file with your credentials.  I have this file named brotatdao-firebase.json in the root.  If you would like to change the name, ensure it is changed in databaseUpload.ts as well.
+- [Namestone](https://namestone.xyz/try-namestone)
+- [Neynar](https://neynar.com/)
+- [Pinata](https://www.pinata.cloud/) (Premium plan required for .html uploads)
+- Firebase Service Account
+- Custom local API key
 
-## Project Setup
-First - Set up .env file 
+## 🛠️ Setup
 
-Then - change `NEXT_PUBLIC_URL` in `/app/config.ts` to a production URL or the ngrok tunnel below
+### 1. Environment Configuration
 
-Then - change project name at ``` bash pinata.pinFileToIPFS(Readable.from(htmlBuffer), { pinataMetadata: { name: `PROJECTNAME/${profileName}/index.html` } } ```
+Create a `.env` file with your API keys and configuration:
 
-Then - change the ens domain passed from route.tsx to the registerSubdomain API ie. domain: 'tweakin.eth',
+```env
+NAMESTONE_API_KEY=your_key_here
+NEYNAR_API_KEY=your_key_here
+PINATA_API_KEY=your_key_here
+PINATA_SECRET_KEY=your_secret_here
+LOCAL_API_KEY=your_chosen_key
+```
+
+### 2. Firebase Setup
+
+1. Go to Firebase Console → Project Settings → Service Accounts
+2. Create new service account
+3. Download JSON credentials
+4. Save as `brotatdao-firebase.json` in root directory
+   - To use a different filename, update reference in `databaseUpload.ts`
+
+### 3. Project Configuration
+
+1. Update `NEXT_PUBLIC_URL` in `/app/config.ts`
+   - Set to production URL or ngrok tunnel
+2. Modify project name in Pinata upload function:
+   ```typescript
+   pinata.pinFileToIPFS(Readable.from(htmlBuffer), {
+     pinataMetadata: { name: `PROJECTNAME/${profileName}/index.html` }
+   })
+   ```
+3. Update ENS domain in `route.tsx` registerSubdomain API call:
+   ```typescript
+   domain: 'tweakin.eth'
+   ```
+
+### 4. Installation
 
 ```bash
 pnpm install
 ```
 
-## Testing
+## 🧪 Testing
 
-For testing using warpcast's frame validator you may want to expose your localhost server by using an ngrok tunnel.  Install ngrok - [https://ngrok.com/download](https://ngrok.com/download)
-
-(option 1 - dev server - the subdomain API gateway may not work using dev server but UI will)
-Use Frog's frame tester at http://localhost:3000/api/dev
-
-IMPORTANT: in route.tsx you need to change the devtools to enabled: true
+### Option 1: Development Server
+Good for UI testing, subdomain API gateway may not work.
 
 ```bash
 pnpm run dev
 ```
+- Access Frog's frame tester at `http://localhost:3000/api/dev`
+- Set `devtools: true` in `route.tsx`
 
-(option 2 - subdomain API gateway will work )
+
+### Option 2: Production Build
+Full functionality including subdomain API gateway.
 
 ```bash
-pnpm build 
-pnpm start 
-```
-**IN A SEPARATE TERMINAL** run the following for http://localhost:3000
-```bash
-ngrok http 3000 
+pnpm build
+pnpm start
 ```
 
-[https://warpcast.com/~/developers/frames](https://warpcast.com/~/developers/frames) - Frame validator for testing
+### Frame Validation
+1. Visit [Warpcast Frame Validator](https://warpcast.com/~/developers/frames)
+2. Enter the ngrok URL from your terminal
 
-Paste in the URL from the terminal running ngrok.
+## 🔍 Frame Testing Tips
 
-## License
+- Use ngrok tunnel for local development testing with the warpcast frame validator
+- Enable devtools in development mode
+- Verify frame responses using Warpcast validator
+- Check IPFS uploads through Pinata dashboard
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+## 📄 License
 
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
