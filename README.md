@@ -17,7 +17,7 @@ You'll need API keys from:
 - [Namestone](https://namestone.xyz/try-namestone)
 - [Neynar](https://neynar.com/)
 - [Pinata](https://www.pinata.cloud/) (Premium plan required for .html uploads)
-- Firebase Service Account
+- Firebase Service Account - (OPTIONAL) can be used to create an explorer page of all subdomains registered. 
 - Custom local API key
 
 ## 🛠️ Setup
@@ -34,7 +34,7 @@ PINATA_SECRET_KEY=your_secret_here
 LOCAL_API_KEY=your_chosen_key
 ```
 
-### 2. Firebase Setup
+### 2. Firebase Setup (OPTIONAL)
 
 1. Go to Firebase Console → Project Settings → Service Accounts
 2. Create new service account
